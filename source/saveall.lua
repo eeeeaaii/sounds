@@ -11,6 +11,7 @@ reaper.GetSet_LoopTimeRange(true, false, 0, four_bars, false)
 -- Set render bounds to exactly 4 bars from 0
 reaper.GetSetProjectInfo(project, "RENDER_STARTPOS", 0, true)
 reaper.GetSetProjectInfo(project, "RENDER_ENDPOS", four_bars, true)
+reaper.GetSetProjectInfo(project, "RENDER_SETTINGS", 0, true)
 
 -- Render settings
 reaper.GetSetProjectInfo_String(project, "RENDER_FILE", output_dir, true)
@@ -38,7 +39,7 @@ end
 -- Build Strudel JSON
 local entries = {}
 for _, name in ipairs(track_names) do
-  table.insert(entries, '  "' .. name .. '": ["' .. name .. '.wav"]')
+  table.insert(entries, '  "' .. name .. '": ["/' .. name .. '.wav"]')
 end
 
 local json = "{\n" .. table.concat(entries, ",\n") .. "\n}"
@@ -49,7 +50,4 @@ if f then
   f:close()
 end
 
-reaper.ShowMessageBox(
-  "Exported " .. #track_names .. " tracks @ " .. bpm .. "bpm\n4 bars = " .. string.format("%.3f", four_bars) .. "s",
-  "Done", 0
-)
+
